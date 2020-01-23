@@ -69,7 +69,9 @@ class ProductCategoryStorageWriter extends SprykerProductCategoryStorageWriter
             $spyProductAbstractCategoryStorageEntity = new SpyProductAbstractCategoryStorage();
         }
 
-        $categories = $categories[$spyProductAbstractLocalizedEntity->getFkProductAbstract()][$spyProductAbstractLocalizedEntity->getFkLocale()];
+        try {
+            $categories = $categories[$spyProductAbstractLocalizedEntity->getFkProductAbstract()][$spyProductAbstractLocalizedEntity->getFkLocale()];
+        }catch (\Exception $exception){}
         if (empty($categories)) {
             if (!$spyProductAbstractCategoryStorageEntity->isNew()) {
                 $spyProductAbstractCategoryStorageEntity->delete();
