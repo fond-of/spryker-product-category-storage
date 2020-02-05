@@ -7,7 +7,7 @@ use Spryker\Zed\CategoryStorage\Communication\Plugin\Synchronization\CategoryNod
 class CategoryNodeSynchronizationDataPlugin extends SprykerCategoryNodeSynchronizationDataPlugin
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @api
      *

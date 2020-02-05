@@ -3,6 +3,7 @@
 namespace FondOfSpryker\Zed\ProductCategoryStorage\Business\Storage;
 
 use Everon\Component\Collection\Collection;
+use Exception;
 use Generated\Shared\Transfer\ProductCategoryStorageTransfer;
 use Generated\Shared\Transfer\StoreTransfer;
 use Orm\Zed\Product\Persistence\Base\SpyProductAbstractLocalizedAttributes;
@@ -71,7 +72,8 @@ class ProductCategoryStorageWriter extends SprykerProductCategoryStorageWriter
 
         try {
             $categories = $categories[$spyProductAbstractLocalizedEntity->getFkProductAbstract()][$spyProductAbstractLocalizedEntity->getFkLocale()];
-        }catch (\Exception $exception){}
+        } catch (Exception $exception) {
+        }
         if (empty($categories)) {
             if (!$spyProductAbstractCategoryStorageEntity->isNew()) {
                 $spyProductAbstractCategoryStorageEntity->delete();

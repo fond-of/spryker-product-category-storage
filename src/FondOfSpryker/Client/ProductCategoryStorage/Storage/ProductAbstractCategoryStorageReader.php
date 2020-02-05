@@ -8,10 +8,10 @@ use Spryker\Client\Kernel\Locator;
 use Spryker\Client\ProductCategoryStorage\Dependency\Client\ProductCategoryStorageToStorageClientInterface;
 use Spryker\Client\ProductCategoryStorage\Dependency\Service\ProductCategoryStorageToSynchronizationServiceInterface;
 use Spryker\Client\ProductCategoryStorage\ProductCategoryStorageConfig;
-use Spryker\Client\ProductCategoryStorage\Storage\ProductAbstractCategoryStorageReaderInterface;
+use Spryker\Client\ProductCategoryStorage\Storage\ProductAbstractCategoryStorageReader as SprykerProductAbstractCategoryStorageReader;
 use Spryker\Shared\ProductCategoryStorage\ProductCategoryStorageConfig as SharedProductCategoryStorageConfig;
 
-class ProductAbstractCategoryStorageReader implements ProductAbstractCategoryStorageReaderInterface
+class ProductAbstractCategoryStorageReader extends SprykerProductAbstractCategoryStorageReader
 {
     /**
      * @var \Spryker\Client\ProductCategoryStorage\Dependency\Client\ProductCategoryStorageToStorageClientInterface
@@ -53,6 +53,18 @@ class ProductAbstractCategoryStorageReader implements ProductAbstractCategorySto
     }
 
     /**
+     * @param array $productAbstractIds
+     * @param string $localeName
+     *
+     * @return array
+     */
+    public function findBulkProductAbstractCategory(array $productAbstractIds, string $localeName): array
+    {
+        //SprykerUpgradeToDo Check it
+        return parent::findBulkProductAbstractCategory($productAbstractIds, $localeName);
+    }
+
+    /**
      * @param int $idProductAbstract
      * @param string $locale
      *
@@ -89,12 +101,12 @@ class ProductAbstractCategoryStorageReader implements ProductAbstractCategorySto
     }
 
     /**
-     * @param int $idProductAbstract
-     * @param string $locale
+     * @param int|string $idProductAbstract
+     * @param string $localeName
      *
      * @return string
      */
-    protected function generateKey($idProductAbstract, $locale)
+    protected function generateKey($idProductAbstract, string $localeName): string
     {
         $synchronizationDataTransfer = new SynchronizationDataTransfer();
         $synchronizationDataTransfer
