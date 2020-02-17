@@ -110,7 +110,7 @@ class ProductAbstractCategoryStorageReader extends SprykerProductAbstractCategor
     {
         $synchronizationDataTransfer = new SynchronizationDataTransfer();
         $synchronizationDataTransfer
-            ->setLocale($locale)
+            ->setLocale($localeName)
             ->setReference($idProductAbstract);
 
         return $this->synchronizationService
