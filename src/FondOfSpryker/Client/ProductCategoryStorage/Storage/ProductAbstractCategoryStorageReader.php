@@ -53,15 +53,27 @@ class ProductAbstractCategoryStorageReader extends SprykerProductAbstractCategor
     }
 
     /**
-     * @param array $productAbstractIds
+     * @param int[] $productAbstractIds
      * @param string $localeName
      *
      * @return array
      */
-    public function findBulkProductAbstractCategory(array $productAbstractIds, string $localeName): array
+    protected function findBulkStorageData(array $productAbstractIds, string $localeName): array
     {
-        //SprykerUpgradeToDo Check it
-        return parent::findBulkProductAbstractCategory($productAbstractIds, $localeName);
+        $storageKeys = [];
+        foreach ($productAbstractIds as $idProductAbstract) {
+            $storageKeys[] = $this->generateKey($idProductAbstract, $localeName);
+        }
+        $productAbstractCategoryStorageData = $this->storageClient->getMulti($storageKeys);
+
+        $decodedProductAbstractCategoryStorageData = [];
+        foreach ($productAbstractCategoryStorageData as $item) {
+            if ($item !== null){
+                $decodedProductAbstractCategoryStorageData[] = json_decode($item, true);
+            }
+        }
+
+        return $decodedProductAbstractCategoryStorageData;
     }
 
     /**
