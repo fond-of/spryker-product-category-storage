@@ -1,8 +1,6 @@
 <?php
-
 namespace FondOfSpryker\Zed\ProductCategoryStorage\Business\Storage;
 
-use Everon\Component\Collection\Collection;
 use Exception;
 use Generated\Shared\Transfer\ProductCategoryStorageTransfer;
 use Generated\Shared\Transfer\StoreTransfer;
@@ -14,12 +12,16 @@ use Spryker\Zed\ProductCategoryStorage\Persistence\ProductCategoryStorageQueryCo
 
 class ProductCategoryStorageWriter extends SprykerProductCategoryStorageWriter
 {
+    /**
+     * @var \Generated\Shared\Transfer\StoreTransfer
+     */
     protected $storeTransfer;
 
     /**
      * @param \Spryker\Zed\ProductCategoryStorage\Dependency\Facade\ProductCategoryStorageToCategoryInterface $categoryFacade
      * @param \Spryker\Zed\ProductCategoryStorage\Persistence\ProductCategoryStorageQueryContainerInterface $queryContainer
      * @param bool $isSendingToQueue
+     * @param \Generated\Shared\Transfer\StoreTransfer $storeTransfer
      */
     public function __construct(
         ProductCategoryStorageToCategoryInterface $categoryFacade,
@@ -27,10 +29,10 @@ class ProductCategoryStorageWriter extends SprykerProductCategoryStorageWriter
         $isSendingToQueue,
         StoreTransfer $storeTransfer
     ) {
+        parent::__construct($categoryFacade, $queryContainer, $isSendingToQueue);
         $this->categoryFacade = $categoryFacade;
         $this->queryContainer = $queryContainer;
         $this->isSendingToQueue = $isSendingToQueue;
-        $this->categoryCacheCollection = new Collection([]);
         $this->storeTransfer = $storeTransfer;
     }
 
@@ -58,14 +60,17 @@ class ProductCategoryStorageWriter extends SprykerProductCategoryStorageWriter
     }
 
     /**
-     * @param \Orm\Zed\Product\Persistence\SpyProductAbstractLocalizedAttributes $spyProductAbstractLocalizedEntity
+     * @param \Orm\Zed\Product\Persistence\Base\SpyProductAbstractLocalizedAttributes $spyProductAbstractLocalizedEntity
      * @param array $categories
      * @param \Orm\Zed\ProductCategoryStorage\Persistence\SpyProductAbstractCategoryStorage|null $spyProductAbstractCategoryStorageEntity
      *
      * @return void
      */
-    protected function storeDataSet(SpyProductAbstractLocalizedAttributes $spyProductAbstractLocalizedEntity, array $categories, ?SpyProductAbstractCategoryStorage $spyProductAbstractCategoryStorageEntity = null)
-    {
+    protected function storeDataSet(
+        SpyProductAbstractLocalizedAttributes $spyProductAbstractLocalizedEntity,
+        array $categories,
+        ?SpyProductAbstractCategoryStorage $spyProductAbstractCategoryStorageEntity = null
+    ) {
         if ($spyProductAbstractCategoryStorageEntity === null) {
             $spyProductAbstractCategoryStorageEntity = new SpyProductAbstractCategoryStorage();
         }
@@ -74,7 +79,7 @@ class ProductCategoryStorageWriter extends SprykerProductCategoryStorageWriter
             $categories = $categories[$spyProductAbstractLocalizedEntity->getFkProductAbstract()][$spyProductAbstractLocalizedEntity->getFkLocale()];
         } catch (Exception $exception) {
         }
-        if (empty($categories)) {
+        if (!$categories) {
             if (!$spyProductAbstractCategoryStorageEntity->isNew()) {
                 $spyProductAbstractCategoryStorageEntity->delete();
             }

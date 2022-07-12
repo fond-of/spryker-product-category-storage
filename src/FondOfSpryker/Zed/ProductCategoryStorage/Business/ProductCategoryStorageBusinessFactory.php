@@ -3,14 +3,14 @@
 namespace FondOfSpryker\Zed\ProductCategoryStorage\Business;
 
 use FondOfSpryker\Zed\ProductCategoryStorage\Business\Storage\ProductCategoryStorageWriter;
+use FondOfSpryker\Zed\ProductCategoryStorage\ProductCategoryStorageDependencyProvider;
 use Generated\Shared\Transfer\StoreTransfer;
-use Orm\Zed\Store\Persistence\Base\SpyStoreQuery;
-use Spryker\Shared\Kernel\Store;
 use Spryker\Zed\ProductCategoryStorage\Business\ProductCategoryStorageBusinessFactory as SprykerProductCategoryStorageBusinessFactory;
 use Spryker\Zed\ProductCategoryStorage\Business\Storage\ProductCategoryStorageWriterInterface;
 
 /**
- * @method \FondOfSpryker\Zed\ProductCategoryStorage\ProductCategoryStorageConfig getConfig()
+ * @method \Spryker\Zed\ProductCategoryStorage\ProductCategoryStorageConfig getConfig()
+ * @method \Spryker\Zed\ProductCategoryStorage\Persistence\ProductCategoryStorageQueryContainerInterface getQueryContainer()
  */
 class ProductCategoryStorageBusinessFactory extends SprykerProductCategoryStorageBusinessFactory
 {
@@ -23,16 +23,8 @@ class ProductCategoryStorageBusinessFactory extends SprykerProductCategoryStorag
             $this->getCategoryFacade(),
             $this->getQueryContainer(),
             $this->getConfig()->isSendingToQueue(),
-            $this->getStore()
+            $this->getStore(),
         );
-    }
-
-    /**
-     * @return \Spryker\Shared\Kernel\Store
-     */
-    public function createStore(): Store
-    {
-        return Store::getInstance();
     }
 
     /**
@@ -40,14 +32,6 @@ class ProductCategoryStorageBusinessFactory extends SprykerProductCategoryStorag
      */
     public function getStore(): StoreTransfer
     {
-        $store = $this->createStore();
-
-        $spyStoreQuery = SpyStoreQuery::create();
-        $spyStore = $spyStoreQuery->filterByName($store->getStoreName())->findOne();
-
-        $storeTransfer = new StoreTransfer();
-        $storeTransfer->fromArray($spyStore->toArray(), true);
-
-        return $storeTransfer;
+        return $this->getProvidedDependency(ProductCategoryStorageDependencyProvider::FACADE_STORE);
     }
 }
