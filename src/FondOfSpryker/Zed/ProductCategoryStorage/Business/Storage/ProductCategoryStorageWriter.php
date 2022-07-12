@@ -14,12 +14,16 @@ use Spryker\Zed\ProductCategoryStorage\Persistence\ProductCategoryStorageQueryCo
 
 class ProductCategoryStorageWriter extends SprykerProductCategoryStorageWriter
 {
+    /**
+     * @var \Generated\Shared\Transfer\StoreTransfer
+     */
     protected $storeTransfer;
 
     /**
      * @param \Spryker\Zed\ProductCategoryStorage\Dependency\Facade\ProductCategoryStorageToCategoryInterface $categoryFacade
      * @param \Spryker\Zed\ProductCategoryStorage\Persistence\ProductCategoryStorageQueryContainerInterface $queryContainer
-     * @param bool $isSendingToQueue
+     * @param $isSendingToQueue
+     * @param \Generated\Shared\Transfer\StoreTransfer $storeTransfer
      */
     public function __construct(
         ProductCategoryStorageToCategoryInterface $categoryFacade,
@@ -27,6 +31,7 @@ class ProductCategoryStorageWriter extends SprykerProductCategoryStorageWriter
         $isSendingToQueue,
         StoreTransfer $storeTransfer
     ) {
+        parent::__construct($categoryFacade, $queryContainer, $isSendingToQueue);
         $this->categoryFacade = $categoryFacade;
         $this->queryContainer = $queryContainer;
         $this->isSendingToQueue = $isSendingToQueue;
@@ -64,8 +69,11 @@ class ProductCategoryStorageWriter extends SprykerProductCategoryStorageWriter
      *
      * @return void
      */
-    protected function storeDataSet(SpyProductAbstractLocalizedAttributes $spyProductAbstractLocalizedEntity, array $categories, ?SpyProductAbstractCategoryStorage $spyProductAbstractCategoryStorageEntity = null)
-    {
+    protected function storeDataSet(
+        SpyProductAbstractLocalizedAttributes $spyProductAbstractLocalizedEntity,
+        array $categories,
+        ?SpyProductAbstractCategoryStorage $spyProductAbstractCategoryStorageEntity = null
+    ) {
         if ($spyProductAbstractCategoryStorageEntity === null) {
             $spyProductAbstractCategoryStorageEntity = new SpyProductAbstractCategoryStorage();
         }
@@ -74,7 +82,7 @@ class ProductCategoryStorageWriter extends SprykerProductCategoryStorageWriter
             $categories = $categories[$spyProductAbstractLocalizedEntity->getFkProductAbstract()][$spyProductAbstractLocalizedEntity->getFkLocale()];
         } catch (Exception $exception) {
         }
-        if (empty($categories)) {
+        if (!$categories) {
             if (!$spyProductAbstractCategoryStorageEntity->isNew()) {
                 $spyProductAbstractCategoryStorageEntity->delete();
             }

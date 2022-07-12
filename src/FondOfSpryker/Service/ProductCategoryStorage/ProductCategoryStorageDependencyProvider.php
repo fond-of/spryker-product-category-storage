@@ -9,7 +9,14 @@ use Spryker\Shared\Kernel\Store;
 
 class ProductCategoryStorageDependencyProvider extends AbstractBundleDependencyProvider
 {
+    /**
+     * @var string
+     */
     public const SERVICE_SYNCHRONIZATION = 'SERVICE_SYNCHRONIZATION';
+
+    /**
+     * @var string
+     */
     public const STORE = 'STORE';
 
     /**
@@ -32,7 +39,7 @@ class ProductCategoryStorageDependencyProvider extends AbstractBundleDependencyP
      */
     protected function addStore(Container $container): Container
     {
-        $container[static::STORE] = function () {
+        $container[static::STORE] = static function () {
             return Store::getInstance();
         };
 
@@ -46,7 +53,7 @@ class ProductCategoryStorageDependencyProvider extends AbstractBundleDependencyP
      */
     protected function addSynchronizationService(Container $container): Container
     {
-        $container[static::SERVICE_SYNCHRONIZATION] = function (Container $container) {
+        $container[static::SERVICE_SYNCHRONIZATION] = static function (Container $container) {
             return new ProductCategoryStorageToSynchronizationServiceBridge($container->getLocator()->synchronization()->service());
         };
 
