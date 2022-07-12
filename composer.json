@@ -20,8 +20,12 @@
       "email": "gengjozsef86@gmail.com"
     }
   ],
-  "minimum-stability": "dev",
-  "prefer-stable": true,
+  "scripts": {
+    "ci": "make ci",
+    "codeception": "make codeception",
+    "phpcs": "make phpcs",
+    "phpstan": "make phpstan"
+  },
   "require": {
     "php": ">=7.3",
     "spryker/category-storage": "^1.6.0",
@@ -32,6 +36,8 @@
     "spryker/code-sniffer": "*",
     "spryker-sdk/phpstan-spryker": "*"
   },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
   "autoload": {
     "psr-4": {
       "FondOfSpryker\\": "src/FondOfSpryker/"
@@ -42,6 +48,11 @@
       "FondOfSpryker\\": "tests/FondOfSpryker/",
       "Generated\\": "src/Generated/",
       "Orm\\Zed\\": "src/Orm/Zed/"
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
     }
   }
 }
