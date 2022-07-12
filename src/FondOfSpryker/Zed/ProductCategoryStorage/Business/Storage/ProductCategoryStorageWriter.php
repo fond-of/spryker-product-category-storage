@@ -26,7 +26,7 @@ class ProductCategoryStorageWriter extends SprykerProductCategoryStorageWriter
     public function __construct(
         ProductCategoryStorageToCategoryInterface $categoryFacade,
         ProductCategoryStorageQueryContainerInterface $queryContainer,
-        $isSendingToQueue, // @codingStandardsIgnoreEnd
+        $isSendingToQueue,
         StoreTransfer $storeTransfer
     ) {
         parent::__construct($categoryFacade, $queryContainer, $isSendingToQueue);
