@@ -9,14 +9,15 @@ class ProductAbstractCategoryStorageReader extends SprykerProductAbstractCategor
     /**
      * @param array<int> $productAbstractIds
      * @param string $localeName
+     * @param string $storeName
      *
      * @return array
      */
-    protected function findBulkStorageData(array $productAbstractIds, string $localeName): array
+    protected function findBulkStorageData(array $productAbstractIds, string $localeName, string $storeName): array
     {
         $storageKeys = [];
         foreach ($productAbstractIds as $idProductAbstract) {
-            $storageKeys[] = $this->generateKey($idProductAbstract, $localeName);
+            $storageKeys[] = $this->generateKey((string)$idProductAbstract, $localeName, $storeName);
         }
         $productAbstractCategoryStorageData = $this->storageClient->getMulti($storageKeys);
 
