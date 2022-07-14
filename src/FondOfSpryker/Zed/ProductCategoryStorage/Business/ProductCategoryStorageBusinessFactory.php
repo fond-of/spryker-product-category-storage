@@ -3,8 +3,8 @@
 namespace FondOfSpryker\Zed\ProductCategoryStorage\Business;
 
 use FondOfSpryker\Zed\ProductCategoryStorage\Business\Storage\ProductCategoryStorageWriter;
+use FondOfSpryker\Zed\ProductCategoryStorage\Dependency\Facade\ProductCategoryStorageToStoreFacadeInterface;
 use FondOfSpryker\Zed\ProductCategoryStorage\ProductCategoryStorageDependencyProvider;
-use Generated\Shared\Transfer\StoreTransfer;
 use Spryker\Zed\ProductCategoryStorage\Business\ProductCategoryStorageBusinessFactory as SprykerProductCategoryStorageBusinessFactory;
 use Spryker\Zed\ProductCategoryStorage\Business\Storage\ProductCategoryStorageWriterInterface;
 
@@ -23,14 +23,14 @@ class ProductCategoryStorageBusinessFactory extends SprykerProductCategoryStorag
             $this->getCategoryFacade(),
             $this->getQueryContainer(),
             $this->getConfig()->isSendingToQueue(),
-            $this->getStore(),
+            $this->getStoreFacade(),
         );
     }
 
     /**
-     * @return \Generated\Shared\Transfer\StoreTransfer
+     * @return \FondOfSpryker\Zed\ProductCategoryStorage\Dependency\Facade\ProductCategoryStorageToStoreFacadeInterface
      */
-    public function getStore(): StoreTransfer
+    public function getStoreFacade(): ProductCategoryStorageToStoreFacadeInterface
     {
         return $this->getProvidedDependency(ProductCategoryStorageDependencyProvider::FACADE_STORE);
     }
