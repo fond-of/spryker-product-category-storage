@@ -3,10 +3,10 @@
 namespace FondOfSpryker\Zed\ProductCategoryStorage;
 
 use FondOfSpryker\Zed\ProductCategoryStorage\Dependency\Facade\ProductCategoryStorageToStoreFacadeBridge;
-use Spryker\Zed\Kernel\AbstractBundleDependencyProvider;
 use Spryker\Zed\Kernel\Container;
+use Spryker\Zed\ProductCategoryStorage\ProductCategoryStorageDependencyProvider as SprykerProductCategoryStorageDependencyProvider;
 
-class ProductCategoryStorageDependencyProvider extends AbstractBundleDependencyProvider
+class ProductCategoryStorageDependencyProvider extends SprykerProductCategoryStorageDependencyProvider
 {
     /**
      * @var string
@@ -20,6 +20,7 @@ class ProductCategoryStorageDependencyProvider extends AbstractBundleDependencyP
      */
     public function provideBusinessLayerDependencies(Container $container): Container
     {
+        $container = parent::provideBusinessLayerDependencies($container);
         $container = $this->addStore($container);
 
         return $container;
