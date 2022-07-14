@@ -3,10 +3,8 @@
 namespace FondOfSpryker\Zed\ProductCategoryStorage\Business;
 
 use FondOfSpryker\Zed\ProductCategoryStorage\Business\Storage\ProductCategoryStorageWriter;
-use FondOfSpryker\Zed\ProductCategoryStorage\ProductCategoryStorageDependencyProvider;
-use Generated\Shared\Transfer\StoreTransfer;
 use Spryker\Zed\ProductCategoryStorage\Business\ProductCategoryStorageBusinessFactory as SprykerProductCategoryStorageBusinessFactory;
-use Spryker\Zed\ProductCategoryStorage\Business\Storage\ProductCategoryStorageWriterInterface;
+use Spryker\Zed\ProductCategoryStorage\Business\Writer\ProductCategoryStorageWriterInterface;
 
 /**
  * @method \Spryker\Zed\ProductCategoryStorage\ProductCategoryStorageConfig getConfig()
@@ -15,23 +13,17 @@ use Spryker\Zed\ProductCategoryStorage\Business\Storage\ProductCategoryStorageWr
 class ProductCategoryStorageBusinessFactory extends SprykerProductCategoryStorageBusinessFactory
 {
     /**
-     * @return \Spryker\Zed\ProductCategoryStorage\Business\Storage\ProductCategoryStorageWriterInterface
+     * @return \Spryker\Zed\ProductCategoryStorage\Business\Writer\ProductCategoryStorageWriterInterface
      */
     public function createProductCategoryStorageWriter(): ProductCategoryStorageWriterInterface
     {
         return new ProductCategoryStorageWriter(
-            $this->getCategoryFacade(),
-            $this->getQueryContainer(),
-            $this->getConfig()->isSendingToQueue(),
-            $this->getStore(),
+            $this->getRepository(),
+            $this->getEntityManager(),
+            $this->getStoreFacade(),
+            $this->createProductAbstractReader(),
+            $this->createProductCategoryStorageReader(),
+            $this->getConfig(),
         );
-    }
-
-    /**
-     * @return \Generated\Shared\Transfer\StoreTransfer
-     */
-    public function getStore(): StoreTransfer
-    {
-        return $this->getProvidedDependency(ProductCategoryStorageDependencyProvider::FACADE_STORE);
     }
 }
